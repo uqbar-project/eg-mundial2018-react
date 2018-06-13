@@ -1,5 +1,7 @@
 # Mundial 2018 Rusia
 
+[![Build Status](https://travis-ci.org/uqbar-project/eg-mundial2018-react.svg?branch=master)](https://travis-ci.org/uqbar-project/eg-mundial2018-react)
+
 ![video](video/demo.gif)
 
 En esta primera iteración podemos buscar los equipos que participan de la copa del mundo Rusia 2018.
