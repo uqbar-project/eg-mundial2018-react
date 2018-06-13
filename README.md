@@ -8,7 +8,7 @@ En esta primera iteración podemos buscar los equipos que participan de la copa 
 
 ## Material UI
 
-El framework que utilizamos para trabajar el look & feel de la aplicación es [Material UI](https://material-ui.com/), que resulta bastante trabajosa de integrar (pero al menos funciona mejor que [React Toolbox](http://react-toolbox.io/))
+El framework que utilizamos para trabajar el look & feel de la aplicación es [Material UI](https://material-ui.com/), que resulta bastante trabajosa de integrar (pero al menos funciona mejor que [React Toolbox](http://react-toolbox.io/)).
 
 ## Fonts y favicon
 
