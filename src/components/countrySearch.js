@@ -4,7 +4,6 @@ import { CountryList } from './countryList'
 import { Country } from '../domain/country'
 
 import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
@@ -14,17 +13,12 @@ export class CountrySearch extends Component {
 
     constructor(props) {
         super(props)
-        this.countries = []
-        this.groups = []
         this.countryService = new CountryService()
+        this.groups = this.countryService.getGroups()
         this.state = {
             search: new Country("", ""),
             countries: this.countryService.getAllCountries()
         }
-    }
-
-    componentWillMount() {
-        this.groups = this.countryService.getGroups()
     }
 
     handleChange(property, event) {

@@ -12,12 +12,7 @@ export class Country {
         return "Grupo " + this.group.toUpperCase()
     }
 
-    /** Busquedas */
-    prototypeSearch() {
-        this.name = this.name || ""
-        this.group = this.group || ""
-    }
-
+    /** Funciones auxiliares para búsquedas */
     matches(_country) {
         return this.match("name", _country) && this.match("group", _country)
     }

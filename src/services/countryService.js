@@ -40,7 +40,6 @@ export class CountryService {
     getAllCountries() { return countries }
 
     getCountries(_country) {
-        _country.prototypeSearch()
         return countries.filter(country => country.matches(_country))
     }
 
