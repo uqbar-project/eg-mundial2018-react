@@ -45,6 +45,7 @@ export class CountrySearch extends Component {
                         <br/>
                         <FormHelperText>Grupo</FormHelperText>
                         <Select
+                            id='group'
                             value={this.state.search.group}
                             onChange={this.handleChange.bind(this, 'group')}
                             inputProps={{

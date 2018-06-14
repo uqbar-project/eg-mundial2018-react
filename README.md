@@ -312,4 +312,62 @@ Aquí estamos usando el Card de Material UI.
 
 # Testing
 
-TODO
+El testeo de la aplicación, además del test básico, contempla:
+
+- el testeo del componente CountryRow, que verifica que se devuelva el nombre del país y que se muestre la bandera del país correctamente
+
+```javascript
+it('countryRow devuelve el país dentro de un p', () => {
+  const wrapper = shallow(<CountryRow country={new Country("South Korea", "F")} />)
+  const p = wrapper.find('p')
+  expect(p.text().trim()).toBe('South Korea')
+})
+
+it('countryRow devuelve la bandera del pais', () => {
+  const wrapper = shallow(<CountryRow country={new Country("South Korea", "F")} />)
+  const img = wrapper.find('img')
+  expect(img.prop("src")).toBe('/assets/south-korea.png')
+})
+```
+
+- testear la búsqueda por descripción del país, simulando que el usuario escribe una 'F' y eso devuelve como resultado una lista con un solo país: Francia
+
+```javascript
+it('buscar F devuelve la lista con un solo país, Francia', () => {
+  const wrapper = shallow(<CountrySearch />)
+  const txtName = wrapper.find('#country')
+  const fakeEventChange = {
+    name: txtName, 
+    value: 'F'
+  }
+  txtName.simulate('change', { 
+    target: fakeEventChange,
+    preventDefault: () => {}
+  })
+  const result = wrapper.state('countries')
+  expect(result.length).toBe(1)
+  const france = result[0].name
+  expect(france).toBe('France')
+})
+```
+
+- también simularemos la búsqueda por grupo (el 'A'), que nos devuelve una lista de países entre los que está Rusia
+
+```javascript
+it('buscar el grupo A devuelve 4 países y uno de ellos es Rusia', () => {
+  const wrapper = shallow(<CountrySearch />)
+  const cbGroup = wrapper.find('#group')
+  const fakeEventChange = {
+    name: cbGroup, 
+    value: 'A'
+  }
+  cbGroup.simulate('change', { 
+    target: fakeEventChange,
+    preventDefault: () => {}
+  })
+  const result = wrapper.state('countries')
+  expect(result.length).toBe(4)
+  const countryNames = result.map(country => country.name)
+  expect(countryNames).toContain('Russia')
+})
+```

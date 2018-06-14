@@ -44,3 +44,19 @@ it('buscar F devuelve la lista con un solo país, Francia', () => {
   const france = result[0].name
   expect(france).toBe('France')
 })
+it('buscar el grupo A devuelve 4 países y uno de ellos es Rusia', () => {
+  const wrapper = shallow(<CountrySearch />)
+  const cbGroup = wrapper.find('#group')
+  const fakeEventChange = {
+    name: cbGroup, 
+    value: 'A'
+  }
+  cbGroup.simulate('change', { 
+    target: fakeEventChange,
+    preventDefault: () => {}
+  })
+  const result = wrapper.state('countries')
+  expect(result.length).toBe(4)
+  const countryNames = result.map(country => country.name)
+  expect(countryNames).toContain('Russia')
+})
