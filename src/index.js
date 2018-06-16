@@ -7,8 +7,8 @@ import Favicon from 'react-favicon'
 
 ReactDOM.render(
     <div>
-         <Favicon url="./favicon.ico" ></Favicon>
-         <App />
+        <Favicon url="./favicon.ico" ></Favicon>
+        <App />
     </div>
     , document.getElementById('root'))
 registerServiceWorker()

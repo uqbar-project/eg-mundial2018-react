@@ -43,6 +43,10 @@ export class CountryService {
         return countries.filter(country => country.matches(_country))
     }
 
+    getCountry(name) {
+        return countries.find(country => country.name.toLowerCase() === name.toLowerCase())
+    }
+
     getGroups() {
         const groups = countries.map(country => country.fullGroup)
         return [...new Set(groups)].sort()
