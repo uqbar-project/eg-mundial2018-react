@@ -8,8 +8,21 @@ import TextField from '@material-ui/core/TextField'
 
 export class MatchRow extends Component {
 
+    componentWillMount() {
+        this.setState({
+            match: this.props.match
+        })
+    }
+
+    changeGoal(match, team, goals) {
+        match.updateScore(team.name, goals)
+        this.setState({
+            match: match
+        })
+    }
+
     render() {
-        const match = this.props.match
+        const match = this.state.match
 
         return (
             <Card>
@@ -25,6 +38,7 @@ export class MatchRow extends Component {
                                 type="number"
                                 style = {{width: '2rem'}}
                                 value={this.props.match.goalA}
+                                onChange={(event) => this.changeGoal(match, match.teamA, event.target.value)}
                                 margin="normal"
                             />
                         </Grid>
@@ -37,6 +51,7 @@ export class MatchRow extends Component {
                                 id="required"
                                 type="number"
                                 style = {{width: '2.5rem'}}
+                                onChange={(event) => this.changeGoal(match, match.teamB, event.target.value)}
                                 value={this.props.match.goalB}
                                 margin="normal"
                             />
