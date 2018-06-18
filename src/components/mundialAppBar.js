@@ -10,7 +10,7 @@ class MundialAppBar extends Component {
 
     render() {
         return (
-            <AppBar position="static">
+            <AppBar position="static" color='default'>
                 <Toolbar>
                     <Button onClick={() => this.props.history.push('/')}>
                         <FlagIcon />
