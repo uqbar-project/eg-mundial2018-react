@@ -8,8 +8,8 @@ export class CountryList extends Component {
     render() {
         return (
             this.props.countries.map(country =>
-                <Card>
-                    <CardContent>
+                <Card key={'card' + country.name}>
+                    <CardContent key={'content' + country.name}>
                         <CountryRow country={country} key={country.name} />
                     </CardContent>
                 </Card>

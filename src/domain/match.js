@@ -17,7 +17,7 @@ export class Match {
     }
 
     get key() {
-        return this.teamA.name + "_" + this.teamB.name
+        return this.teamA.key + "_" + this.teamB.key
     }
 
     group() {

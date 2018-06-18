@@ -23,7 +23,7 @@ export class MatchRow extends Component {
 
     render() {
         const match = this.state.match
-
+        
         return (
             <Card>
                 <CardContent>
@@ -34,7 +34,7 @@ export class MatchRow extends Component {
                         <Grid item xs={6} sm={3}>
                             <TextField
                                 required
-                                id="required"
+                                id={match.teamA.key + '_goles'}
                                 type="number"
                                 style = {{width: '2rem'}}
                                 value={this.props.match.goalA}
@@ -48,7 +48,7 @@ export class MatchRow extends Component {
                         <Grid item xs={6} sm={3}>
                             <TextField
                                 required
-                                id="required"
+                                id={match.teamB.key + '_goles'}
                                 type="number"
                                 style = {{width: '2.5rem'}}
                                 onChange={(event) => this.changeGoal(match, match.teamB, event.target.value)}

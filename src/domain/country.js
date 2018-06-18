@@ -5,7 +5,11 @@ export class Country {
     }
 
     get flag() {
-        return this.name.replace(' ', '-').toLowerCase() + '.png'
+        return this.key + '.png'
+    }
+
+    get key() {
+        return this.name.replace(' ', '-').toLowerCase()
     }
 
     get fullGroup() {

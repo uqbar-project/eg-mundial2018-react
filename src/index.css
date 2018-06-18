@@ -20,4 +20,6 @@ body {
 .flag {
   position: relative;
   bottom: -0.5rem;
+  border: 0.05rem solid #dedede;
+  border-radius: 0.2rem;
 }

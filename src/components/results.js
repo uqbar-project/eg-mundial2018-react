@@ -11,7 +11,7 @@ export class Results extends Component {
         return (
             <div>
                 <MundialAppBar/>
-                {matches.map(match => <MatchRow match={match} key={match.key}/>)}
+                {matches.map(match => <MatchRow id={match.key} match={match} key={match.key}/>)}
             </div>
         )
     }

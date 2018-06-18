@@ -8,6 +8,7 @@ import { shallow } from 'enzyme'
 import { Country } from './domain/country'
 import { CountryRow } from './components/countryRow'
 import { CountrySearch } from './components/countrySearch'
+import { Results } from './components/results'
 
 import App from './App'
 
@@ -17,9 +18,9 @@ it('app levanta ok', () => {
   shallow(<App />)
 })
 
-it('countryRow devuelve el país dentro de un p', () => {
+it('countryRow devuelve el país dentro de un div inline', () => {
   const wrapper = shallow(<CountryRow country={new Country("South Korea", "F")} />)
-  const p = wrapper.find('p')
+  const p = wrapper.find('div.inline')
   expect(p.text().trim()).toBe('South Korea')
 })
 
@@ -59,4 +60,10 @@ it('buscar el grupo A devuelve 4 países y uno de ellos es Rusia', () => {
   expect(result.length).toBe(4)
   const countryNames = result.map(country => country.name)
   expect(countryNames).toContain('Russia')
+})
+it('results show Russia made 5 goals against Saudi Arabia', () => {
+  const wrapper = shallow(<Results/>)
+  const russia_arabia = wrapper.find('#russia_saudi-arabia').dive()
+  const goals = russia_arabia.find('#russia_goles')
+  expect(goals.props().value).toBe(5)
 })
