@@ -16,9 +16,9 @@ class MundialAppBar extends Component {
                         <FlagIcon />
                         Buscar países
                         </Button>
-                    <Button onClick={() => this.props.history.push('/resultados')}>
+                    <Button onClick={() => this.props.history.push('/fixture')}>
                         <EditIcon />
-                        ¡Cargá los resultados!
+                        ¡Cargá los resultados y mirá las posiciones!
                         </Button>
                 </Toolbar>
             </AppBar>

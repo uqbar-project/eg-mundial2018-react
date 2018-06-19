@@ -1,6 +1,6 @@
 export class Match {
 
-    constructor(teamA, goalA, teamB, goalB) {
+    constructor(teamA, goalsA, teamB, goalsB) {
         if (!teamA) {
             throw new Error('Debe ingresar el primer equipo')
         }
@@ -12,8 +12,8 @@ export class Match {
         }
         this.teamA = teamA
         this.teamB = teamB
-        this.goalA = goalA
-        this.goalB = goalB
+        this.goalsA = goalsA
+        this.goalsB = goalsB
     }
 
     get key() {
@@ -26,9 +26,9 @@ export class Match {
 
     updateScore(teamName, goals) {
         if (this.teamA.name === teamName) {
-            this.goalA = goals
+            this.goalsA = goals
         } else {
-            this.goalB = goals
+            this.goalsB = goals
         }
     }
 }

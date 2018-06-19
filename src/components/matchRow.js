@@ -5,8 +5,10 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { CountryRow } from "./countryRow"
 import TextField from '@material-ui/core/TextField'
+import { updateMatch } from '../redux/actions'
+import { connect } from 'react-redux'
 
-export class MatchRow extends Component {
+class MatchRow extends Component {
 
     componentWillMount() {
         this.setState({
@@ -15,7 +17,8 @@ export class MatchRow extends Component {
     }
 
     changeGoal(match, team, goals) {
-        match.updateScore(team.name, goals)
+        match.updateScore(team.name, Math.trunc(goals))
+        this.props.updateMatch(match)
         this.setState({
             match: match
         })
@@ -23,7 +26,7 @@ export class MatchRow extends Component {
 
     render() {
         const match = this.state.match
-        
+
         return (
             <Card>
                 <CardContent>
@@ -36,8 +39,8 @@ export class MatchRow extends Component {
                                 required
                                 id={match.teamA.key + '_goles'}
                                 type="number"
-                                style = {{width: '2rem'}}
-                                value={this.props.match.goalA}
+                                style={{ width: '2rem' }}
+                                value={this.props.match.goalsA}
                                 onChange={(event) => this.changeGoal(match, match.teamA, event.target.value)}
                                 margin="normal"
                             />
@@ -50,9 +53,9 @@ export class MatchRow extends Component {
                                 required
                                 id={match.teamB.key + '_goles'}
                                 type="number"
-                                style = {{width: '2.5rem'}}
+                                style={{ width: '2.5rem' }}
                                 onChange={(event) => this.changeGoal(match, match.teamB, event.target.value)}
-                                value={this.props.match.goalB}
+                                value={this.props.match.goalsB}
                                 margin="normal"
                             />
                         </Grid>
@@ -62,3 +65,17 @@ export class MatchRow extends Component {
         )
     }
 }
+
+
+const mapStateToProps = state => {
+    return {
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateMatch: (match) => dispatch(updateMatch(match))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MatchRow)
