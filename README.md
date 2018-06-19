@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/uqbar-project/eg-mundial2018-react.svg?branch=master)](https://travis-ci.org/uqbar-project/eg-mundial2018-react)
 
-![demo](video/demo.gif)
+<img src="video/demo.gif" height="130%" width="130%"/>
 
 En la tercera iteración, vamos a modificar el caso de uso "Cargar resultados del mundial" para incorporarle una tabla de posiciones dinámica.
 
