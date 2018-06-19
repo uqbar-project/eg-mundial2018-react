@@ -24,6 +24,10 @@ export class Match {
         return this.teamA.group
     }
 
+    matchesGroup(group) {
+        return this.group().includes(group)
+    }
+
     updateScore(teamName, goals) {
         if (this.teamA.name === teamName) {
             this.goalsA = goals

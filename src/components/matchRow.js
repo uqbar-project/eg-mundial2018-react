@@ -31,7 +31,7 @@ class MatchRow extends Component {
             <Card>
                 <CardContent>
                     <Grid container spacing={8}>
-                        <Grid item xs={6} sm={3}>
+                        <Grid item xs={6} sm={3} style={{textAlign: 'left'}}>
                             <CountryRow country={match.teamA} key={match.teamA.name} />
                         </Grid>
                         <Grid item xs={6} sm={3}>
@@ -45,7 +45,7 @@ class MatchRow extends Component {
                                 margin="normal"
                             />
                         </Grid>
-                        <Grid item xs={6} sm={3}>
+                        <Grid item xs={6} sm={3} style={{textAlign: 'left'}}>
                             <CountryRow country={match.teamB} />
                         </Grid>
                         <Grid item xs={6} sm={3}>
