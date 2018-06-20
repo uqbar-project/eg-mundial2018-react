@@ -239,7 +239,7 @@ const reducer = (state, action) => {
 
 Como el lector apreciará, creamos una constante INIT_MATCHES que usamos dentro del archivo _actions.js_ de /src/redux para unificar los nombres de las acciones. Y la parte importante es que aquí invocamos al matchService para pedirle la lista de partidos. La función reductora para este caso particular, recibe un estado inicial donde no hay partidos y la acción de inicializar los partidos, y devuelve un nuevo estado con la lista de partidos inicializada:
 
-![image](images/Mundial2018_React_Reducer.png)
+![image](images/Mundial2018_React_Reducer_function.png)
 
 ## Resumen general de una solución con React-Redux
 
