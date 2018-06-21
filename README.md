@@ -17,9 +17,98 @@ No hay nuevas rutas en nuestra aplicación, pero sí hacemos una ligera modifica
 
 ## Componentes visuales
 
-
+![image](images/ComponentesFixture.png)
 
 ## Armado de la tabla de posiciones
+
+Para armar la tabla de posiciones, tomamos como input la lista de partido y hacemos un doble corte de control:
+
+- primero por grupo
+- luego por país
+
+Es decir, tenemos un mapa:
+
+![image](images/TablaPosiciones.png)
+
+Recorremos los partidos generando o actualizando el mapa por grupo y país (archivo _positionTable.js_):
+
+```javascript
+const positions = new Map()
+this.props.matches.forEach(match => {
+    const group = match.group()
+    const groupPosition = positions.get(group) || new GroupPosition(group)
+    groupPosition.processMatch(match)
+    positions.set(group, groupPosition)
+})
+```
+
+El método processMatch de PositionGroup hace el procesamiento para el equipo local y el visitante:
+
+```javascript
+    processMatch(match) {
+        this.searchPositionItem(match.teamA).processMatch(match.goalsA, match.goalsB)
+        this.searchPositionItem(match.teamB).processMatch(match.goalsB, match.goalsA)
+    }
+
+    searchPositionItem(team) {
+        let result = this.positionItems.find(item => item.team.matches(team))
+        if (!result) {
+            result = new PositionItem(team)
+            this.positionItems.push(result)
+        }
+        return result
+    }
+```
+
+Veamos el método processMatch del objeto de negocio positionItem, que representa una línea dentro de la tabla de posiciones:
+
+```javascript
+processMatch(goalsOwn, goalsAgainst) {
+    if (goalsOwn === undefined || goalsAgainst === undefined) return
+    this.goalsOwn += goalsOwn
+    this.goalsAgainst += goalsAgainst
+    if (goalsOwn > goalsAgainst) this.won++
+    if (goalsOwn < goalsAgainst) this.lost++
+    if (goalsOwn === goalsAgainst) this.tied++
+}
+```
+
+Para mostrar la tabla, el componente PositionTable (vista) en su método render dibuja la tabla de la siguiente manera:
+
+```javascript
+return (
+    <Card key={'cardPosiciones'}>
+        <CardContent key={'contentPosiciones'}>
+            <h3>Tabla de posiciones</h3>
+            {[...positions].map((itemGroup) => {
+                const group = itemGroup[0]
+                const positions = itemGroup[1].positions()
+                return <PositionGroupTable group={group} positions={positions} key={'positions_group_' + group} />
+            }
+            )}
+        </CardContent>
+    </Card>
+)
+```
+
+Partimos de positions, que es el mapa que construimos previamente. Como el mapa de ECMAScript no conoce la función map, tenemos que pasarlo a una lista utilizando el _spread operator_ `[...positions]`. Esto nos da una lista de objetos que tiene `{grupo: nombre_grupo, groupPosition: lista_de_equipos}`. Pero como la lista de equipos no está ordenada, llamamos a un método en groupPosition que ordena los equipos por puntos:
+
+```javascript
+>>GroupPosition
+positions() {
+    return this.positionItems.sort((item1, item2) => item1.order <= item2.order)
+}
+
+>>PositionItem
+get order() {
+    return this.points * 10000 + this.goalAverage * 100 + this.goalsOwn
+}
+get points() {
+    return this.won * 3 + this.tied
+}
+```
+
+Bueno, no solo por puntos, también por diferencia de gol y goles a favor.
 
 
 # React-redux: Estado compartido entre componentes
@@ -239,7 +328,119 @@ const reducer = (state, action) => {
 
 Como el lector apreciará, creamos una constante INIT_MATCHES que usamos dentro del archivo _actions.js_ de /src/redux para unificar los nombres de las acciones. Y la parte importante es que aquí invocamos al matchService para pedirle la lista de partidos. La función reductora para este caso particular, recibe un estado inicial donde no hay partidos y la acción de inicializar los partidos, y devuelve un nuevo estado con la lista de partidos inicializada:
 
-![image](images/Mundial2018_React_Reducer_function.png)
+![image](images/Mundial2018_React_Reducer_InitMatches.png)
+
+
+## UPDATE_MATCHES: Actualizar el resultado de un partido
+
+El componente MatchRow permite actualizar el resultado de un partido, esto debería actualizar el estado global que contiene todos los partidos para redibujar la tabla de posiciones. Entonces vamos a incorporarlo, mapeando los estados y acciones al componente MatchRow:
+
+```javascript
+const mapStateToProps = state => {
+    return { }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateMatch: (match) => dispatch(updateMatch(match))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MatchRow)
+```
+
+En verdad, queremos conservar el estado del partido solamente en el componente, y no hacerlo global. Por eso no hay propiedades asociadas al state (queda un objeto JSON vacío). Por el contrario, sí queremos que cuando el usuario modifique el resultado eso dispare la actualización del _store_, despachando la acción updateMatch.
+
+Cuando el usuario modifica la cantidad de goles en el componente se dispara el método changeGoal...
+
+```javascript
+>>MatchRow
+<TextField
+    required
+    id={match.teamA.key + '_goles'}
+    type="number"
+    style={{ width: '2rem' }}
+    value={this.props.match.goalsA}
+    onChange={(event) => this.changeGoal(match, match.teamA, event.target.value)}
+    margin="normal"
+/>
+```
+
+...y eso refleja un cambio en el estado del componente (que contiene al match), algo que afortunadamente delegamos en él, pero además hace un dispatch del updateMatch (mapeado como parte de los props)
+
+```javascript
+>>MatchRow
+changeGoal(match, team, goals) {
+    match.updateScore(team.name, Math.trunc(goals))
+    this.props.updateMatch(match)
+    this.setState({
+        match: match
+    })
+}
+```
+
+La acción updateMatch se registra en el archivo /src/redux/actions.js:
+
+```javascript
+export function updateMatch(match) {
+    return {
+        type: UPDATE_MATCH,
+        match
+    }
+}
+```
+
+Y la recibimos en el _store_ (/src/redux/store.js) actualizando la lista de partidos:
+
+```javascript
+const reducer = (state, action) => {
+    ...
+    if (action.type === UPDATE_MATCH) {
+        const indexMatchToReplace = state.matches.findIndex((match) => match.key === action.match.key)
+        state.matches[indexMatchToReplace] = action.match 
+        return {
+            matches: [...state.matches]
+        }
+    }
+    return state
+}
+
+export default createStore(reducer, { matches: [] })
+```
+
+### Inmutabilidad de la lista de partidos
+
+Si el lector revisó el código anterior, habrá visto que al final no estamos devolviendo la misma lista de partidos, sino que creamos una nueva:
+
+```javascript
+        return {
+            matches: [...state.matches]
+        }
+```
+
+Esto es porque dentro de React y en particular también en Redux debemos trabajar con elementos **inmutables**, para que el mecanismo de actualización reactiva funcione. Este mismo código no producirá ningún efecto en la aplicación:
+
+```javascript
+const reducer = (state, action) => {
+    ...
+    if (action.type === UPDATE_MATCH) {
+        const indexMatchToReplace = state.matches.findIndex((match) => match.key === action.match.key)
+        state.matches[indexMatchToReplace] = action.match 
+        return {
+            matches: state.matches // no funcionará
+        }
+    }
+    return state
+}
+```
+
+Pero al generar un nuevo objeto con la lista, se detecta el cambio y se regenera la tabla de posiciones:
+
+![video](video/domChange.gif)
+
+En este caso la función reductora recibe una lista de partidos, una acción que contiene el nuevo valor para alguno de los partidos, y termina devolviendo como estado nuevo la lista de partidos modificada:
+
+![image](images/Mundial2018_React_Reducer_UpdateMatches.png)
 
 ## Resumen general de una solución con React-Redux
 
@@ -249,4 +450,4 @@ Extraído de [este sitio web](https://www.esri.com/arcgis-blog/products/js-api-a
 
 # Testing
 
-Basándonos en [este artículo](https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c), 
+TODO

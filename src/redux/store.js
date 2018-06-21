@@ -11,12 +11,10 @@ const reducer = (state, action) => {
         }
     }
     if (action.type === UPDATE_MATCH) {
-        const matchesClone = [...state.matches]
-        const matchToFind = matchesClone.find((match) => match.key === action.match.key)
-        matchToFind.goalsA = action.match.goalsA
-        matchToFind.goalsB = action.match.goalsB
+        const indexMatchToReplace = state.matches.findIndex((match) => match.key === action.match.key)
+        state.matches[indexMatchToReplace] = action.match 
         return {
-            matches: matchesClone
+            matches: [...state.matches]
         }
     }
     return state
