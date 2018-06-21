@@ -184,8 +184,8 @@ Pero _reduce_ no se aplica solo a listas, también lo podemos aplicar para cualq
 En el ejemplo de React redux vamos a hacer exactamente lo mismo. 
 
 - _cumplirAnios_ es nuestra función reductora
-- _rodri_ (la persona), será nuestro store
-- y el evento cumplirAnios se va a disparar a partir de una acción 
+- _rodri_ (la persona), será el state original
+- y el evento cumplirAnios se va a disparar a partir de una acción, generando un nuevo state
 
 Veamos cómo se implementa dentro del ejemplo del mundial.
 
@@ -303,7 +303,7 @@ class Fixture extends Component {
 }
 ```
 
-Al iniciar el componente, despachamos la acción INIT_MATCHES mediante this.props.initMatches(). Y luego le pasamos los partidos a los componentes Results y PositionTable a través del comando `this.props.matches`.
+Al iniciar el componente, despachamos la acción INIT_MATCHES mediante `this.props.initMatches()`. Y luego le pasamos los partidos a los componentes Results y PositionTable a través del comando `this.props.matches`.
 
 ## Función reductora
 
@@ -434,7 +434,7 @@ const reducer = (state, action) => {
 }
 ```
 
-Pero al generar un nuevo objeto con la lista, se detecta el cambio y se regenera la tabla de posiciones:
+Pero sí si creamos una **nueva lista**. Entonces, React detectará el cambio y se regenerará la tabla de posiciones:
 
 ![video](video/domChange.gif)
 
@@ -450,4 +450,29 @@ Extraído de [este sitio web](https://www.esri.com/arcgis-blog/products/js-api-a
 
 # Testing
 
-TODO
+No hemos dedicado en esta versión demasiado tiempo al testing, pero para que siga funcionando el test que verifica que Rusia haya hecho 5 goles en la inauguración del mundial, tenemos que hacer algún ajuste. Si no tenemos cuidado, nos aparecerá un mensaje como éste:
+
+```
+Invariant Violation: Could not find "store" in either the context or props of "Connect(MatchRow)"
+```
+
+Esto es porque Results tiene una lista de MatchRow, que necesitan mapear al _store_ para despacharle acciones. Para lograr que se inyecte correctamente la dependencia, tenemos que 
+
+- mockear el store a partir de la biblioteca redux-mock-store (que importamos solo en modo dev)
+- envolverlo en un contexto
+- y pasárselo a nuestro mock del componente Results (el que se construye mediante la función _shallow_)
+
+```javascript
+it('results show Russia made 5 goals against Saudi Arabia', () => {
+  const matches = new MatchService().getMatches()
+  const mockStore = configureStore()
+  const store = mockStore({matches: matches})
+  const context = { store: store }
+  const wrapper = shallow(<Results matches={matches}/>, { context })
+  const russia_arabia = wrapper.find('#russia_saudi-arabia').dive()
+  const goals = russia_arabia.dive().find('#russia_goles')
+  expect(goals.props().value).toBe(5)
+})
+```
+
+Entonces sí funcionará nuestro test, aclarando que no estamos probando que la modificación del resultado impacte en el store.
