@@ -1,29 +1,27 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-
 import 'jest-enzyme'
 import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import { shallow } from 'enzyme'
+import App from './App'
+import { Provider } from 'react-redux'
+import { MatchService } from './services/matchService'
 import { Country } from './domain/country'
 import { CountryRow } from './components/countryRow'
 import { CountrySearch } from './components/countrySearch'
 import { Results } from './components/results'
-
-import App from './App'
+import configureStore from 'redux-mock-store'
 
 configure({ adapter: new Adapter() })
 
 it('app levanta ok', () => {
   shallow(<App />)
 })
-
 it('countryRow devuelve el país dentro de un div inline', () => {
   const wrapper = shallow(<CountryRow country={new Country("South Korea", "F")} />)
   const p = wrapper.find('div.inline')
   expect(p.text().trim()).toBe('South Korea')
 })
-
 it('countryRow devuelve la bandera del pais', () => {
   const wrapper = shallow(<CountryRow country={new Country("South Korea", "F")} />)
   const img = wrapper.find('img')
@@ -62,8 +60,14 @@ it('buscar el grupo A devuelve 4 países y uno de ellos es Rusia', () => {
   expect(countryNames).toContain('Russia')
 })
 it('results show Russia made 5 goals against Saudi Arabia', () => {
-  const wrapper = shallow(<Results/>)
+  const matches = new MatchService().getMatches()
+  const mockStore = configureStore()
+  const store = mockStore({matches: matches})
+  // Pasamos el store al contexto para evitar el error
+  //  Invariant Violation: Could not find "store" in either the context or props of "Connect(MatchRow)"
+  const context = { store: store }
+  const wrapper = shallow(<Results matches={matches}/>, { context })
   const russia_arabia = wrapper.find('#russia_saudi-arabia').dive()
-  const goals = russia_arabia.find('#russia_goles')
+  const goals = russia_arabia.dive().find('#russia_goles')
   expect(goals.props().value).toBe(5)
 })

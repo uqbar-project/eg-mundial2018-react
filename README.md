@@ -248,3 +248,5 @@ Como el lector apreciará, creamos una constante INIT_MATCHES que usamos dentro 
 Extraído de [este sitio web](https://www.esri.com/arcgis-blog/products/js-api-arcgis/3d-gis/react-redux-building-modern-web-apps-with-the-arcgis-js-api/).
 
 # Testing
+
+Basándonos en [este artículo](https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c), 

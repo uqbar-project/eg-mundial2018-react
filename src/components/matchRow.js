@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField'
 import { updateMatch } from '../redux/actions'
 import { connect } from 'react-redux'
 
-class MatchRow extends Component {
+export class MatchRow extends Component {
 
     componentWillMount() {
         this.setState({
