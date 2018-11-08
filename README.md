@@ -120,6 +120,8 @@ Tenemos dos componentes que tienen un estado compartido:
 
 Pero además, si alguien modifica un resultado (componente _MatchRow_ hijo del componente padre _Results_), eso debería actualizar la tabla de posiciones. React tiene mecanismos para actualizar estados desde un componente hacia otros, pero esta es una buena ocasión para incorporar **React Redux** a nuestra aplicación, que nos va a permitir manejar un estado compartido entre componentes para simplificar el esquema de notificaciones ante un cambio.
 
+Para una explicación más detallada podés consultar [el ejemplo del contador con React Redux](https://github.com/uqbar-project/eg-contador-react-redux)
+
 Veamos cómo se implementa dentro del ejemplo del mundial.
 
 ## Store
