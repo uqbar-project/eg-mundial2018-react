@@ -5,7 +5,7 @@ const countryService = new CountryService()
 
 export class MatchService {
     
-    static build(teamA, teamB, goalA, goalB) {
+    static build(teamA, teamB, goalA = 0, goalB = 0) {
         return new Match(MatchService.getTeam(teamA), goalA, MatchService.getTeam(teamB), goalB)
     }
 
