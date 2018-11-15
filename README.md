@@ -104,7 +104,6 @@ Vemos el componente que muestra o edita los datos de un partido:
 ```javascript
 render() {
     const match = this.state.match
-    
     return (
         <Card>
             <CardContent>
@@ -118,7 +117,7 @@ render() {
                             id={match.teamA.key + '_goles'}
                             type="number"
                             style = {{width: '2rem'}}
-                            value={this.props.match.goalA}
+                            value={match.goalA}
                             onChange={(event) => this.changeGoal(match, match.teamA, event.target.value)}
                             margin="normal"
                         />
@@ -133,7 +132,7 @@ render() {
                             type="number"
                             style = {{width: '2.5rem'}}
                             onChange={(event) => this.changeGoal(match, match.teamB, event.target.value)}
-                            value={this.props.match.goalB}
+                            value={match.goalB}
                             margin="normal"
                         />
                     </Grid>
@@ -168,6 +167,8 @@ updateScore(teamName, goals) {
 ```
 
 Aunque salgamos y volvamos a entrar, la aplicación mantiene su estado.
+
+> Una aclaración: si dejamos el partido que no se jugó sin goles, nos aparecerá un molesto `Warning: A component is changing an uncontrolled input of type number to be controlled.` porque pasar como valor `undefined` dentro del estado es para React decirle que no controle sus cambios. Así que ahora verán que por defecto todos los partidos están 0 a 0, los que no se jugaron y los que ya se jugaron.
 
 # Testing
 

@@ -23,35 +23,36 @@ export class MatchRow extends Component {
     }
 
     render() {
+        const match = this.state.match
         return (
             <Card>
                 <CardContent>
                     <Grid container spacing={8}>
                         <Grid item xs={6} sm={3}>
-                            <CountryRow country={this.state.match.teamA} key={this.state.match.teamA.name} />
+                            <CountryRow country={match.teamA} key={match.teamA.name} />
                         </Grid>
                         <Grid item xs={6} sm={3}>
                             <TextField
                                 required
-                                id={this.state.match.teamA.key + '_goles'}
+                                id={match.teamA.key + '_goles'}
                                 type="number"
                                 style = {{width: '2rem'}}
-                                value={this.state.match.goalA}
-                                onChange={(event) => this.changeGoal(this.state.match, this.state.match.teamA, event.target.value)}
+                                value={match.goalA}
+                                onChange={(event) => this.changeGoal(match, match.teamA, event.target.value)}
                                 margin="normal"
                             />
                         </Grid>
                         <Grid item xs={6} sm={3}>
-                            <CountryRow country={this.state.match.teamB} />
+                            <CountryRow country={match.teamB} />
                         </Grid>
                         <Grid item xs={6} sm={3}>
                             <TextField
                                 required
-                                id={this.state.match.teamB.key + '_goles'}
+                                id={match.teamB.key + '_goles'}
                                 type="number"
                                 style = {{width: '2.5rem'}}
-                                onChange={(event) => this.changeGoal(this.state.match, this.state.match.teamB, event.target.value)}
-                                value={this.state.match.goalB}
+                                onChange={(event) => this.changeGoal(match, match.teamB, event.target.value)}
+                                value={match.goalB}
                                 margin="normal"
                             />
                         </Grid>
