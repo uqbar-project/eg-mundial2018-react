@@ -61,11 +61,11 @@ it('buscar el grupo A devuelve 4 países y uno de ellos es Rusia', () => {
 })
 it('results show Russia made 5 goals against Saudi Arabia', () => {
   const matches = new MatchService().getMatches()
-  const mockStore = configureStore()
-  const store = mockStore({matches: matches})
+  const mockStore = configureStore()({matches})
+  const store = mockStore
   // Pasamos el store al contexto para evitar el error
   //  Invariant Violation: Could not find "store" in either the context or props of "Connect(MatchRow)"
-  const context = { store: store }
+  const context = {store}
   const wrapper = shallow(<Results matches={matches}/>, { context })
   const russia_arabia = wrapper.find('#russia_saudi-arabia').dive()
   const goals = russia_arabia.dive().find('#russia_goles')
