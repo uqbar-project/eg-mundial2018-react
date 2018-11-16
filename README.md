@@ -117,17 +117,15 @@ Lo que hace el servicio es transformar la lista de países en una lista de grupo
 
 ```javascript
 getGroups() {
-    const groups = countries.map(country => country.fullGroup)
+    const groups = countries.map(country => country.group)
     return [...new Set(groups)].sort()
 }
 ```
 
-La clase Country que representa un país que juega la copa del mundo, tiene una propiedad fullGroup que permite mostrar "Grupo A" en lugar de "A" solamente:
+La clase Country que representa un país que juega la copa del mundo, tiene una propiedad `group` que solo tiene la letra del grupo. La palabra "Grupo" que vemos en el combo aparece en la vista:
 
 ```javascript
-get fullGroup() {
-    return "Grupo " + this.group.toUpperCase()
-}
+{this.groups.map(group => <MenuItem value={group} key={group}>{`Grupo ${group}`}</MenuItem>)}
 ```
 
 ## Manejo del estado
