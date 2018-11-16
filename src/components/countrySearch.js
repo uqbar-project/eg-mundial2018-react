@@ -8,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import MundialAppBar from './mundialAppBar'
 
 export class CountrySearch extends Component {
 
@@ -35,7 +34,6 @@ export class CountrySearch extends Component {
     render() {
         return (
             <div>
-                <MundialAppBar/>
                 <div className="search">
                     <FormControl className="formControl">
                         <FormHelperText>País</FormHelperText>
