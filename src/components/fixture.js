@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import MundialAppBar from './mundialAppBar'
 import { Results } from './results'
 import { PositionTable } from './positionTable'
 import Grid from '@material-ui/core/Grid'
@@ -15,7 +14,6 @@ class Fixture extends Component {
     render() {
         return (
             <div>
-                <MundialAppBar />
                 <Grid container spacing={0}>
                     <Grid item xs={7}>
                         <Results matches={this.props.matches} />
