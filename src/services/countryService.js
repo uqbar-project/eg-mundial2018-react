@@ -44,7 +44,7 @@ export class CountryService {
     }
 
     getGroups() {
-        const groups = countries.map(country => country.fullGroup)
+        const groups = countries.map(country => country.group)
         return [...new Set(groups)].sort()
     }
 }

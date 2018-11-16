@@ -56,7 +56,7 @@ export class CountrySearch extends Component {
                             <MenuItem value="">
                                 <em>Todos</em>
                             </MenuItem>
-                            {this.groups.map(group => <MenuItem value={group.split(' ')[1]} key={group}>{group}</MenuItem>)}
+                            {this.groups.map(group => <MenuItem value={group} key={group}>{`Grupo ${group}`}</MenuItem>)}
                         </Select>
                     </FormControl>
                 </div>
