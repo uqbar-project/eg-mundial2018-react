@@ -8,10 +8,6 @@ export class Country {
         return this.name.replace(' ', '-').toLowerCase() + '.png'
     }
 
-    get fullGroup() {
-        return "Grupo " + this.group.toUpperCase()
-    }
-
     /** Funciones auxiliares para búsquedas */
     matches(_country) {
         return this.match("name", _country) && this.match("group", _country)
