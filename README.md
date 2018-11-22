@@ -90,7 +90,7 @@ Permite ingresar el grupo (en un selector o combo) o bien una descripción para 
                             <MenuItem value="">
                                 <em>Todos</em>
                             </MenuItem>
-                            {this.groups.map(group => <MenuItem value={group.split(' ')[1]} key={group}>{group}</MenuItem>)}
+                            {this.groups.map(group => <MenuItem value={group} key={group}>{`Grupo ${group}`}</MenuItem>)}
                         </Select>
                     </FormControl>
                 </div>
