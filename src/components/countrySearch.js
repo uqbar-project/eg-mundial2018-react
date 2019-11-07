@@ -42,7 +42,7 @@ export class CountrySearch extends Component {
                             value={this.state.search.name}
                             onChange={this.handleChange.bind(this, 'name')}
                         />
-                        <br/>
+                        <br />
                         <FormHelperText>Grupo</FormHelperText>
                         <Select
                             id='group'
@@ -52,7 +52,7 @@ export class CountrySearch extends Component {
                                 name: 'group',
                                 id: 'group'
                             }}
-                            >
+                        >
                             <MenuItem value="">
                                 <em>Todos</em>
                             </MenuItem>

@@ -1,20 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { CountryRow } from './countryRow'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 
-export class CountryList extends Component {
-
-    render() {
-        return (
-            this.props.countries.map(country =>
-                <Card key={'card' + country.name}>
-                    <CardContent key={'content' + country.name}>
-                        <CountryRow country={country} key={country.name} />
-                    </CardContent>
-                </Card>
-            )
+export function CountryList({ countries }) {
+    return (
+        countries.map(country =>
+            <Card key={`card_${country.name}`}>
+                <CardContent>
+                    <CountryRow country={country} />
+                </CardContent>
+            </Card>
         )
-    }
+    )
 
 }

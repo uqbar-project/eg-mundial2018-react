@@ -15,50 +15,44 @@ export class MatchRow extends Component {
         }
     }
 
-    changeGoal(match, team, goals) {
+    changeGoal(team, goals) {
+        const { match } = this.state
         match.updateScore(team.name, goals)
         this.setState({
-            match: match
+            match
         })
     }
 
     render() {
-        const match = this.state.match
+        const { match } = this.state
         return (
-            <Card>
+            <Card data-testid={match.key}>
                 <CardContent>
                     <Grid container spacing={8}>
-                        <Grid item xs={6} sm={3}>
-                            <CountryRow country={match.teamA} key={match.teamA.name} />
-                        </Grid>
-                        <Grid item xs={6} sm={3}>
-                            <TextField
-                                required
-                                id={match.teamA.key + '_goles'}
-                                type="number"
-                                style = {{width: '2rem'}}
-                                value={match.goalA}
-                                onChange={(event) => this.changeGoal(match, match.teamA, event.target.value)}
-                                margin="normal"
-                            />
-                        </Grid>
-                        <Grid item xs={6} sm={3}>
-                            <CountryRow country={match.teamB} />
-                        </Grid>
-                        <Grid item xs={6} sm={3}>
-                            <TextField
-                                required
-                                id={match.teamB.key + '_goles'}
-                                type="number"
-                                style = {{width: '2.5rem'}}
-                                onChange={(event) => this.changeGoal(match, match.teamB, event.target.value)}
-                                value={match.goalB}
-                                margin="normal"
-                            />
-                        </Grid>
+                        <MatchTeam team={match.teamA} goal={match.goalA} changeGoal={this.changeGoal} />
+                        <MatchTeam team={match.teamB} goal={match.goalB} changeGoal={this.changeGoal} />
                     </Grid>
                 </CardContent>
             </Card>
         )
     }
+}
+
+function MatchTeam({ team, goal, changeGoal }) {
+    return <>
+        <Grid item xs={6} sm={3}>
+            <CountryRow country={team} />
+        </Grid>
+        <Grid item xs={6} sm={3}>
+            <TextField
+                required
+                id={`${team.key}_goles`}
+                type="number"
+                style={{ width: '2.5rem' }}
+                value={goal}
+                onChange={(event) => changeGoal(team, event.target.value)}
+                margin="normal"
+            />
+        </Grid>
+    </>
 }

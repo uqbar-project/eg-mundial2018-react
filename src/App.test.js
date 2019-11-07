@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import 'jest-enzyme'
 import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import { Country } from './domain/country'
 import { CountryRow } from './components/countryRow'
 import { CountrySearch } from './components/countrySearch'
@@ -33,12 +33,12 @@ it('buscar F devuelve la lista con un solo país, Francia', () => {
   const wrapper = shallow(<CountrySearch />)
   const txtName = wrapper.find('#country')
   const fakeEventChange = {
-    name: txtName, 
+    name: txtName,
     value: 'F'
   }
-  txtName.simulate('change', { 
+  txtName.simulate('change', {
     target: fakeEventChange,
-    preventDefault: () => {}
+    preventDefault: () => { }
   })
   const result = wrapper.state('countries')
   expect(result.length).toBe(1)
@@ -49,21 +49,22 @@ it('buscar el grupo A devuelve 4 países y uno de ellos es Rusia', () => {
   const wrapper = shallow(<CountrySearch />)
   const cbGroup = wrapper.find('#group')
   const fakeEventChange = {
-    name: cbGroup, 
+    name: cbGroup,
     value: 'A'
   }
-  cbGroup.simulate('change', { 
+  cbGroup.simulate('change', {
     target: fakeEventChange,
-    preventDefault: () => {}
+    preventDefault: () => { }
   })
   const result = wrapper.state('countries')
   expect(result.length).toBe(4)
   const countryNames = result.map(country => country.name)
   expect(countryNames).toContain('Russia')
 })
-it('results show Russia made 5 goals against Saudi Arabia', () => {
-  const wrapper = shallow(<Results/>)
-  const russia_arabia = wrapper.find('#russia_saudi-arabia').dive()
-  const goals = russia_arabia.find('#russia_goles')
+/* it('results show Russia made 5 goals against Saudi Arabia', () => {
+  const wrapper = shallow(<Results />)
+  console.log(wrapper.debug())
+  const russia_arabia = wrapper.find('#russia_saudi-arabia')
+  const goals = russia_arabia.render().find('#russia_goles')
   expect(goals.props().value).toBe(5)
-})
+}) */
