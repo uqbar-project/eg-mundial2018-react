@@ -20,7 +20,7 @@ export class GroupPosition {
     }
 
     positions() {
-        return this.positionItems.sort((item1, item2) => item1.order <= item2.order)
+        return this.positionItems.sort((a, b) => b.order - a.order)
     }
 }
 
@@ -36,7 +36,7 @@ export class PositionItem {
     }
 
     processMatch(goalsOwn, goalsAgainst) {
-        if (goalsOwn === undefined || goalsAgainst === undefined) return
+        if (!goalsOwn || !goalsAgainst) return
         this.goalsOwn += goalsOwn
         this.goalsAgainst += goalsAgainst
         if (goalsOwn > goalsAgainst) this.won++
